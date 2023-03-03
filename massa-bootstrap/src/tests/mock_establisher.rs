@@ -9,7 +9,7 @@ use std::time::Instant;
 use tokio::sync::mpsc;
 use tokio::time::timeout;
 
-pub type Duplex = std::net::TcpStream;
+pub type Duplex = mio::net::TcpStream;
 
 pub fn new() -> (MockEstablisher, MockEstablisherInterface) {
     let (connection_listener_tx, connection_listener_rx) =
