@@ -449,12 +449,19 @@ pub fn get_state(
                 }
             }
             info!("Start bootstrapping from {}", addr);
-            match blocking_connect_to_server(
-                &mut establisher,
-                bootstrap_config,
-                addr,
-                &node_id.get_public_key(),
-            ) {
+            // used to be a timeout using a helper funcion in this match-scope
+            match {
+                let establisher: &mut Establisher = &mut establisher;
+                let pub_key = &node_id.get_public_key();
+                // connect
+                let mut connector = establisher.get_connector(bootstrap_config.connect_timeout)?;
+                let socket = connector.connect(*addr)?;
+                Ok::<BootstrapClientBinder, BootstrapError>(BootstrapClientBinder::new(
+                    socket,
+                    *pub_key,
+                    bootstrap_config.into(),
+                ))
+            } {
                 Ok(mut client) => {
                     // TODO: setup cancellations?
                     match bootstrap_from_server(
