@@ -100,28 +100,6 @@ impl BootstrapManager {
     }
 }
 
-fn listen_thread(
-    mut listener: Listener,
-    // must be an empty-bound. Needs to block-on-send untill it's been consumed
-    // before accepting the next one.
-    conn_tx: Sender<BsConn>,
-) -> JoinHandle<Result<(), Box<BootstrapError>>> {
-    std::thread::spawn(move || loop {
-        let conn = listener
-            .blocking_accept()
-            .map_err(BootstrapError::IoError)?;
-        // this should block untill the server receives.
-        // The first one should be instant.
-        // subsequent ones assume that
-        if let Err(e) = conn_tx.send(conn) {
-            return Err(Box::new(BootstrapError::GeneralError(format!(
-                "update stopper error : {}",
-                e
-            ))));
-        }
-    })
-}
-
 /// See module level documentation for details
 pub async fn start_bootstrap_server(
     consensus_controller: Box<dyn ConsensusController>,
