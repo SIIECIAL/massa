@@ -59,11 +59,8 @@ use tokio::runtime::{self, Runtime};
 use tracing::{debug, error, info, warn};
 
 use crate::{
-    error::BootstrapError,
-    messages::BootstrapServerMessage,
-    server_binder::BootstrapServerBinder,
-    types::{Duplex, Listener},
-    BootstrapConfig, Establisher,
+    error::BootstrapError, establisher::Duplex, messages::BootstrapServerMessage,
+    server_binder::BootstrapServerBinder, types::Listener, BootstrapConfig, Establisher,
 };
 
 /// Abstraction layer over data produced by the listener, and transported

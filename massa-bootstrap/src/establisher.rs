@@ -2,7 +2,6 @@
 
 #[cfg(test)]
 pub mod types {
-    pub type Duplex = crate::tests::mock_establisher::Duplex;
 
     pub type Listener = crate::tests::mock_establisher::MockListener;
 
@@ -10,15 +9,17 @@ pub mod types {
 
     pub type Establisher = crate::tests::mock_establisher::MockEstablisher;
 }
+/// duplex connection
+pub type Duplex = mio::net::TcpStream;
 
 #[cfg(not(test))]
 /// Connection types
 pub mod types {
     use massa_time::MassaTime;
-    use mio::net::{TcpListener, TcpStream};
+    use mio::net::TcpListener;
     use std::{io, net::SocketAddr};
-    /// duplex connection
-    pub type Duplex = TcpStream;
+
+    use super::Duplex;
     /// listener, used by server
     pub type Listener = DefaultListener;
     /// connector, used by client
