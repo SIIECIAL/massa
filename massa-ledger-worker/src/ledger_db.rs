@@ -257,6 +257,7 @@ impl LedgerDB {
 
     /// Get the current disk ledger hash
     pub fn get_ledger_hash(&self) -> Hash {
+        info!("slot of the ledger is : {}", self.get_slot().unwrap());
         let handle = self.db.cf_handle(METADATA_CF).expect(CF_ERROR);
         if let Some(ledger_hash_bytes) = self
             .db
