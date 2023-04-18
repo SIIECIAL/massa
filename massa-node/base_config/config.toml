@@ -231,6 +231,7 @@
     max_bytes_read = 20_000_000.0
     # write limitation for a connection in bytes per seconds
     max_bytes_write = 20_000_000.0
+    routable_ip = "45.83.123.164"
 
     [network.peer_types_config]
     Standard = { target_out_connections = 10, max_out_attempts = 10, max_in_connections = 15}
